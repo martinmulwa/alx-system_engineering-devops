@@ -1,0 +1,17 @@
+#!/usr/bin/env bash
+# A Bash script that installs and configures nginx on our server
+
+# Update package list and install Nginx
+apt-get update
+apt-get -y install nginx
+
+# Configure Nginx to listen on port 80
+sed -i 's/listen\s*80;/listen 80 default_server;/' /etc/nginx/sites-available/default
+sed -i 's/# server_names_hash_bucket_size 64;/server_names_hash_bucket_size 64;/' /etc/nginx/nginx.conf
+
+# Create index.html file with "Hello World!" message
+echo "Hello World!" > /var/www/html/index.html
+
+# Restart Nginx without using systemctl
+sudo service nginx stop
+sudo nginx -t && sudo nginx
